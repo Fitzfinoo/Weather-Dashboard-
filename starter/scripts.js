@@ -1,6 +1,5 @@
-//Declare a variable to store the searched city
+//Declare a variable 
 var city="";
-// variable declaration
 var searchCity = $("#search-input");
 var searchButton = $("#search-button");
 var currentCity = $("#current-city");
@@ -9,7 +8,12 @@ var currentHumidty= $("#humidity");
 var currentWSpeed=$("#wind");
 
 var sCity=[];
-// searches the city to see if it exists in the entries from the storage
+
+
+$("#search-button").on("click",displayWeather);
+$(document).on("click",invokePastSearch);
+$(window).on("load",loadlastCity);
+// check the city search in storage
 function find(c){
     for (var i=0; i<sCity.length; i++){
         if(c.toUpperCase()===sCity[i]){
@@ -20,50 +24,52 @@ function find(c){
 }
 //Set up the API key
 var APIKey="3335123026b99dfa251c15804e9bc324";
-// Display the curent and future weather to the user after grabing the city form the input text box.
+// Display the curent and future weather 
 function displayWeather(event){
     event.preventDefault();
     if(searchCity.val().trim()!==""){
         city=searchCity.val().trim();
         currentWeather(city);
+        forecast(city);
     }
 }
-// Here we create the AJAX call
+// create the AJAX call
 function currentWeather(city){
-    // Here we build the URL so we can get a data from server side.
     var queryURL= "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + APIKey;
     $.ajax({
         url:queryURL,
         method:"GET",
     }).then(function(response){
+  
+      console.log(response);
 
-        // parse the response to display the current weather including the City name. the Date and the weather icon. 
-        console.log(response);
         //Dta object from server side Api for icon property.
         var weathericon= response.weather[0].icon;
-        var iconurl="https://openweathermap.org/img/wn/"+weathericon +"@2x.png";
-        // The date format method is taken from the  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
+        var iconurl="https://openweathermap.org/img/wn/"+ weathericon +".png" ;
+
         var date=new Date(response.dt*1000).toLocaleDateString();
+
         //parse the response for name of city and concanatig the date and icon.
         $(currentCity).html(response.name +"("+date+")" + "<img src="+iconurl+">");
-        // parse the response to display the current temperature.
-        // Convert the temp to fahrenheit
 
+        // parse the response to display the current temperature.
         var tempC = (response.main.temp - 273.15) ;
         $(currentTemperature).html((tempC).toFixed(2)+"&#8451");
-        // Display the Humidity
-        $(currentHumidty).html(response.main.humidity+"%");
+  
         //Display Wind speed and convert to MPH
         var ws=response.wind.speed;
         var windsmph=(ws*2.237).toFixed(1);
         $(currentWSpeed).html(windsmph+"MPH");
+
+        // Display the Humidity
+        $(currentHumidty).html(response.main.humidity+"%");
     });
 }
 
-// Here we display the 5 days forecast for the current city.
-function forecast(cityid){
+// display the forecast 
+function forecast(city){
     var dayover= false;
-    var queryforcastURL="https://api.openweathermap.org/data/2.5/forecast?id="+cityid+"&appid="+APIKey;
+    var queryforcastURL="https://api.openweathermap.org/data/2.5/forecast?q="+ city +"&appid="+APIKey;
     $.ajax({
         url:queryforcastURL,
         method:"GET"
@@ -72,7 +78,7 @@ function forecast(cityid){
         for (i=0;i<5;i++){
             var date= new Date((response.list[((i+1)*8)-1].dt)*1000).toLocaleDateString();
             var iconcode= response.list[((i+1)*8)-1].weather[0].icon;
-            var iconurl="https://openweathermap.org/img/wn/"+iconcode+"@2x.png";
+            var iconurl="https://openweathermap.org/img/wn/"+iconcode+".png";
             var tempK= response.list[((i+1)*8)-1].main.temp;
             var tempC=(tempK-273.5).toFixed(2);
             var ws=response.list[((i+1)*8)-1].wind.speed;
@@ -83,28 +89,28 @@ function forecast(cityid){
             $("#fDate"+i).html(date);
             $("#fImg"+i).html("<img src="+iconurl+">");
             $("#fTemp"+i).html(tempC+"&#8451");
-            $("#fWind"+i).html(Winds+"MPH");  
+            $("#fWind"+i).html(windsmph+"MPH");  
             $("#fHumidity"+i).html(humidity+"%");
         }
         
     });
 }
 
-//Daynamically add the passed city on the search history
+//add the passed city on the search history
 function addToList(c){
     var listEl= $("<li>"+c.toUpperCase()+"</li>");
-    $(listEl).attr("class","list-group-item");
+    $(listEl).attr("class","list-group-item list-group-item-secondary");
     $(listEl).attr("data-value",c.toUpperCase());
     $(".list-group").append(listEl);
 }
-// display the past search again when the list group item is clicked in search history
+// display the past search in the list group 
 function invokePastSearch(event){
     var liEl=event.target;
     if (event.target.matches("li")){
         city=liEl.textContent.trim();
         currentWeather(city);
-    }
 
+    }
 }
 
 // render function
@@ -118,6 +124,7 @@ function loadlastCity(){
         }
         city=sCity[i-1];
         currentWeather(city);
+        forecast(city);
     }
 
 }
