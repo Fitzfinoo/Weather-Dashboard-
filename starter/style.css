@@ -1,11 +1,41 @@
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    margin-left: -1.5rem;
-    margin-right: -1.5rem;
-  }
-  
-.forcast{
-    display:flexbox;
-}  
+
+h1,h3{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-style: oblique;
+   
+}
+
+h2{
+    font-size:xx-small;
+    font-style: oblique;}
+
+#frow, #topRow, p, li{
+    font-family: 'Times New Roman', Times, serif;
+    size: 6px
+}
+
+#forcastTemperature0, 
+#forcastTemperature1,
+#forcastTemperature2,
+#forcastTemperature3,
+#forcastTemperature4{
+    color:rgb(13, 5, 127);  
+}
+
+
+#forcastWind0, 
+#forcastWind1,
+#forcastWind2,
+#forcastWind3,
+#forcastWind4{
+    color:rgb(6, 127, 6);  
+}
+
+
+#forcastHumidity0, 
+#forcastHumidity1,
+#forcastHumidity2,
+#forcastHumidity3,
+#forcastHumidity4{
+    color:rgb(204, 65, 30);  
+}

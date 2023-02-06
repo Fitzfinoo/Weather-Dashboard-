@@ -12,15 +12,15 @@
 </head>
 
 <body>
-  <header class="container-fluid text-center text-white bg-secondary p-2 weather-header">
+  <header class="container-fluid text-center text-white bg-info p-4 weather-header ">
     <h1>Weather Dashboard</h1>
   </header>
 
   <!-- max-width for ultra wide resolutions -->
   <div class="container-fluid" >
-    <div class="row">
+    <div class="row" id="topRow">
       <aside class="col-sm-1 " style="max-width: 200px">
-        <h2 id="form-heading" class="mt-6 h5 form-label">
+        <h2 id="form" class="form">
           Search for a City:
         </h2>
         <form id="search-form" class="form">
@@ -29,7 +29,7 @@
               <input class="form-input weather-search rounded border border-info" type="text" id="search-input" placeholder="London"
                  aria-controls="today forecast" />
               <div class="input-group-append">
-                <button type="submit" class="btn btn-secondary rounded" id="search-button" aria-label="submit search">
+                <button type="submit" class="btn btn-info rounded" id="search-button" aria-label="submit search">
                   Search
                 </button>
                 <hr class="hr weather-hr" />
@@ -38,7 +38,7 @@
           </div>
         </form>
         <!--change div to list-->
-        <ul class="list-group secondary rounded" id="history">
+        <ul class="list-group bg-info rounded" id="history">
          
  
           
@@ -46,60 +46,62 @@
       </aside>
 
       <div class="col-sm-9" style="max-width: 1400px">
-        <section id="today" class="mt-1 h1 bolder" ></section>
+        <section id="today" class="header" ></section>
         <!--Add for current status-->
           <div class="col-sm-9" id="current-weather">
             <h3 class ="city-name bolder " id="current-city"></h3>
-            <p>Temp: <span class="current" id="temperature"></span></p>
-            <p>Wind: <span class="current" id="wind"></span></p>
+            <p>Temperature: <span class="current" id="temperature"></span></p>
+            <p>Wind Speed: <span class="current" id="wind"></span></p>
             <p>Humidity: <span class="current" id="humidity"></span></p>
           </div>
+
+
           <!---add for forecast-->
         <section id="forecast" class="col-sm-9"></section>
           <h3>5-Day Forecast:</h3>
           <!--day 1-->
-          <div class="col-sm-2 bg-info forecast text-white shadow-lg p-3 mb-5 ">
-            <p id="fDate0"></p>
-            <p id="fImage0"></p>
-            <p>Temp: <span id="fTemp0"></span></p>
-            <p>Wind: <span id="fWind0"></span></p>
-            <p>Humidity: <span id="fHumidity0"></span></p>
+          <div class = "row" id="frow">
+            <!--day 1-->
+            <div class="col-sm-2 bg-info forecast text-white shadow-lg p-3 mb-5 ">
+              <p id="forcastDate0"></p>
+              <p id="forcastImage0"></p>
+              <p>Temperature: <span id="forcastTemperature0"></span></p>
+              <p>Wind Speed: <span id="forcastWind0"></span></p>
+              <p>Humidity: <span id="forcastHumidity0"></span></p>
+            </div>
+            <!--day 2-->
+            <div class="col-sm-2 bg-info forecast text-white shadow-lg p-3 mb-5">
+              <p id="forcastDate1"></p>
+              <p id="forcastImage1"></p>
+              <p>Temperature: <span id="forcastTemperature1"></span></p>
+              <p>Wind Speed: <span id="forcastWind1"></span></p>
+              <p>Humidity:<span id="forcastHumidity1"></span></p>
+            </div>
+            <!--day 3-->
+            <div class="col-sm-2 bg-info forecast text-white shadow-lg p-3 mb-5 ">
+              <p id="forcastDate2"></p>
+              <p id="forcastImage2"></p>
+              <p>Temperature: <span id="forcastTemperature2"></span></p>
+              <p>Wind Speed: <span id="forcastWind2"></span></p>
+              <p>Humidity: <span id="forcastHumidity2"></span></p>
+            </div>
+            <!--day 4-->
+            <div class="col-sm-2 bg-info forecast text-white shadow-lg p-3 mb-5">
+              <p id="forcastDate3"></p>
+              <p id="forcastImage3"></p>
+              <p>Temperature: <span id="forcastTemperature3"></span></p>
+              <p>Wind Speed: <span id="forcastWind3"></span></p>
+              <p>Humidity: <span id="forcastHumidity3"></span></p>
+            </div>
+            <!--day 5-->
+            <div class="col-sm-2 bg-info forecast text-white shadow-lg p-3 mb-5">
+              <p id="forcastDate4"></p>
+              <p id="forcastImage4"></p>
+              <p>Temperature: <span id="forcastTemperature4"></span></p>
+              <p>Wind Speed: <span id="forcastWind4"></span></p>
+              <p>Humidity: <span id="forcastHumidity4"></span></p>
+            </div>
           </div>
-          <!--day 2-->
-          <div class="col-sm-2 bg-info forecast text-white shadow-lg p-3 mb-5">
-            <p id="fDate1"></p>
-            <p id="fImage1"></p>
-            <p>Temp: <span id="fTemp1"></span></p>
-            <p>Wind: <span id="fWind1"></span></p>
-            <p>Humidity:<span id="fHumidity1"></span></p>
-          </div>
-          <!--day 3-->
-          <div class="col-sm-2 bg-info forecast text-white shadow-lg p-3 mb-5 ">
-            <p id="fDate2"></p>
-            <p id="fImage2"></p>
-            <p>Temp: <span id="fTemp2"></span></p>
-            <p>Wind: <span id="fWind2"></span></p>
-            <p>Humidity: <span id="fHumidity2"></span></p>
-          </div>
-          <!--day 4-->
-          <div class="col-sm-2 bg-info forecast text-white shadow-lg p-3 mb-5">
-            <p id="fDate3"></p>
-            <p id="fImage3"></p>
-            <p>Temp: <span id="fTemp3"></span></p>
-            <p>Wind: <span id="fWind3"></span></p>
-            <p>Humidity: <span id="fHumidity3"></span></p>
-          </div>
-          <!--day 5-->
-          <div class="col-sm-2 bg-info forecast text-white shadow-lg p-3 mb-5">
-            <p id="fDate4"></p>
-            <p id="fImage4"></p>
-            <p>Temp: <span id="fTemp4"></span></p>
-            <p>Wind: <span id="fWind4"></span></p>
-            <p>Humidity: <span id="fHumidity4"></span></p>
-          </div>
-
-
-      </div>
     
   </div>
 

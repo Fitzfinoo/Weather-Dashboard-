@@ -4,19 +4,19 @@ var searchCity = $("#search-input");
 var searchButton = $("#search-button");
 var currentCity = $("#current-city");
 var currentTemperature = $("#temperature");
-var currentHumidty= $("#humidity");
-var currentWSpeed=$("#wind");
+var currentHumidity= $("#humidity");
+var currentWindSpeed=$("#wind");
 
-var sCity=[];
+var seCity=[];
 
 
 $("#search-button").on("click",displayWeather);
-$(document).on("click",invokePastSearch);
-$(window).on("load",loadlastCity);
+$(document).on("click",lastSearch);
+$(window).on("load",lastCity);
 // check the city search in storage
 function find(c){
-    for (var i=0; i<sCity.length; i++){
-        if(c.toUpperCase()===sCity[i]){
+    for (var i=0; i<seCity.length; i++){
+        if(c.toUpperCase()===seCity[i]){
             return -1;
         }
     }
@@ -44,25 +44,25 @@ function currentWeather(city){
       console.log(response);
 
         //Dta object from server side Api for icon property.
-        var weathericon= response.weather[0].icon;
-        var iconurl="https://openweathermap.org/img/wn/"+ weathericon +".png" ;
+        var weatherIcon= response.weather[0].icon;
+        var iconLink="https://openweathermap.org/img/wn/"+ weatherIcon +".png" ;
 
         var date=new Date(response.dt*1000).toLocaleDateString();
 
         //parse the response for name of city and concanatig the date and icon.
-        $(currentCity).html(response.name +"("+date+")" + "<img src="+iconurl+">");
+        $(currentCity).html(response.name +"("+date+")" + "<img src="+iconLink+">");
 
         // parse the response to display the current temperature.
-        var tempC = (response.main.temp - 273.15) ;
-        $(currentTemperature).html((tempC).toFixed(2)+"&#8451");
+        var temperatureDC = (response.main.temp - 273.15) ;
+        $(currentTemperature).html((temperatureDC).toFixed(2)+"&#8451");
   
         //Display Wind speed and convert to MPH
-        var ws=response.wind.speed;
-        var windsmph=(ws*2.237).toFixed(1);
-        $(currentWSpeed).html(windsmph+"MPH");
+        var windSpeed=response.wind.speed;
+        var windSpeedMph=(windSpeed*2.237).toFixed(1);
+        $(currentWindSpeed).html(windSpeedMph+"MPH");
 
         // Display the Humidity
-        $(currentHumidty).html(response.main.humidity+"%");
+        $(currentHumidity).html(response.main.humidity+"%");
     });
 }
 
@@ -77,20 +77,20 @@ function forecast(city){
         
         for (i=0;i<5;i++){
             var date= new Date((response.list[((i+1)*8)-1].dt)*1000).toLocaleDateString();
-            var iconcode= response.list[((i+1)*8)-1].weather[0].icon;
-            var iconurl="https://openweathermap.org/img/wn/"+iconcode+".png";
-            var tempK= response.list[((i+1)*8)-1].main.temp;
-            var tempC=(tempK-273.5).toFixed(2);
-            var ws=response.list[((i+1)*8)-1].wind.speed;
-            var windsmph=(ws*2.237).toFixed(1);
+            var weatherIcon= response.list[((i+1)*8)-1].weather[0].icon;
+            var iconLink="https://openweathermap.org/img/wn/"+weatherIcon+".png" ;
+            var temperatureKelvin= response.list[((i+1)*8)-1].main.temp;
+            var temperatureDC=(temperatureKelvin-273.5).toFixed(2);
+            var windSpeed=response.list[((i+1)*8)-1].wind.speed;
+            var windspeedMph=(windSpeed*2.237).toFixed(1);
             var humidity= response.list[((i+1)*8)-1].main.humidity;
 
         
-            $("#fDate"+i).html(date);
-            $("#fImg"+i).html("<img src="+iconurl+">");
-            $("#fTemp"+i).html(tempC+"&#8451");
-            $("#fWind"+i).html(windsmph+"MPH");  
-            $("#fHumidity"+i).html(humidity+"%");
+            $("#forcastDate"+i).html(date);
+            $("#forcastImage"+i).html("<img src="+iconLink+">");
+            $("#forcastTemperature"+i).html(temperatureDC+"&#8451");
+            $("#forcastWind"+i).html(windspeedMph+"MPH");  
+            $("#forcastHumidity"+i).html(humidity+"%");
         }
         
     });
@@ -99,47 +99,40 @@ function forecast(city){
 //add the passed city on the search history
 function addToList(c){
     var listEl= $("<li>"+c.toUpperCase()+"</li>");
-    $(listEl).attr("class","list-group-item list-group-item-secondary");
+    $(listEl).attr("class","list-group-item list-group-item-info");  
     $(listEl).attr("data-value",c.toUpperCase());
     $(".list-group").append(listEl);
 }
 // display the past search in the list group 
-function invokePastSearch(event){
+function lastSearch(event){
     var liEl=event.target;
     if (event.target.matches("li")){
         city=liEl.textContent.trim();
         currentWeather(city);
-
+        forecast(city);
     }
 }
 
 // render function
-function loadlastCity(){
+function lastCity(){
     $("ul").empty();
-    var sCity = JSON.parse(localStorage.getItem("cityname"));
-    if(sCity!==null){
-        sCity=JSON.parse(localStorage.getItem("cityname"));
-        for(i=0; i<sCity.length;i++){
-            addToList(sCity[i]);
+    var seCity = JSON.parse(localStorage.getItem("cityname"));
+    if(seCity!==null){
+        seCity=JSON.parse(localStorage.getItem("cityname"));
+        for(i=0; i<seCity.length;i++){
+            addToList(seCity[i]);
         }
-        city=sCity[i-1];
+        city=seCity[i-1];
         currentWeather(city);
         forecast(city);
     }
 
 }
-//Clear the search history from the page
-function clearHistory(event){
-    event.preventDefault();
-    sCity=[];
-    localStorage.removeItem("cityname");
-    document.location.reload();
 
-}
 //Click Handlers
 $("#search-button").on("click",displayWeather);
-$(document).on("click",invokePastSearch);
-$(window).on("load",loadlastCity);
+$(document).on("click",lastSearch);
+$(window).on("load",lastCity);
 
 
 
